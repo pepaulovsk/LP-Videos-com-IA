@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Wireframe — LP Criando Vídeos com IA</title>
+<meta name="viewport" content="width=1320" />
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --ink-2:#3a3a3a;
+    --muted:#6b6b6b;
+    --line:#1a1a1a;
+    --line-soft:#bdbdbd;
+    --bg:#f4f3ef;
+    --card:#ffffff;
+    --hatch:#e5e3dc;
+    --note:#a45a1f;       /* annotation accent (amber, low sat) */
+    --cta:#dcd7c8;        /* CTA placeholder fill */
+    --cta-ink:#1a1a1a;
+    --dark:#1a1a1a;       /* hero "dark" placeholder */
+    --dark-ink:#f4f3ef;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  body{font-size:14px;line-height:1.45}
+  .mono{font-family:ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace}
+
+  /* ============ DOCUMENT FRAME ============ */
+  .doc{
+    max-width:1320px;
+    margin:0 auto;
+    padding:32px 32px 120px;
+  }
+  .doc-head{
+    display:grid;
+    grid-template-columns:1fr auto;
+    align-items:end;
+    gap:24px;
+    padding-bottom:20px;
+    margin-bottom:32px;
+    border-bottom:1px solid var(--line);
+  }
+  .doc-title{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+    margin:0 0 6px;
+  }
+  .doc-h1{font-size:28px;line-height:1.1;margin:0;font-weight:700;letter-spacing:-.01em}
+  .doc-h1 em{font-style:normal;color:var(--muted)}
+  .doc-meta{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--muted);text-align:right;line-height:1.6}
+
+  /* Browser frame around the LP */
+  .browser{
+    border:1.5px solid var(--line);
+    background:var(--bg);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .browser-bar{
+    display:flex;align-items:center;gap:8px;
+    padding:10px 14px;border-bottom:1px solid var(--line);
+    background:#ece9df;
+  }
+  .browser-bar .dot{width:10px;height:10px;border-radius:50%;border:1px solid var(--line)}
+  .browser-bar .url{
+    flex:1;margin:0 14px;height:24px;background:#fff;border:1px solid var(--line-soft);
+    border-radius:4px;display:flex;align-items:center;padding:0 10px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--muted);
+  }
+
+  /* ============ SECTION SCAFFOLD ============ */
+  .section{
+    position:relative;
+    border-bottom:1px dashed var(--line-soft);
+    padding:56px 72px;
+  }
+  .section:last-child{border-bottom:none}
+  .section.dark{background:var(--dark);color:var(--dark-ink)}
+  .section.dark .placeholder{background-color:#222;background-image:repeating-linear-gradient(135deg,#2a2a2a 0 1px,transparent 1px 14px);border-color:#444;color:#888}
+  .section.dark .label{color:#888;border-color:#333}
+  .section.dark .h2,.section.dark .h3{color:var(--dark-ink)}
+  .section.dark .copy{color:#bbb}
+
+  /* Section tag (left rail) */
+  .section .tag{
+    position:absolute;
+    left:18px;top:56px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--note);
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+  }
+  .section .tag b{color:var(--note);font-weight:700}
+
+  /* Annotation chips on right rail */
+  .anno{
+    position:absolute;right:18px;top:56px;width:170px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;line-height:1.5;
+    color:var(--note);
+    border-left:2px solid var(--note);
+    padding:4px 0 4px 10px;
+  }
+  .anno .ttl{display:block;text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:4px}
+
+  /* Typography */
+  .h2{font-size:28px;line-height:1.15;margin:0 0 14px;font-weight:700;letter-spacing:-.01em;max-width:880px}
+  .h2.huge{font-size:40px;line-height:1.05}
+  .h3{font-size:18px;line-height:1.25;margin:0 0 8px;font-weight:700}
+  .eyebrow{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .copy{font-size:14px;line-height:1.6;color:var(--ink-2);margin:0 0 12px;max-width:720px}
+  .copy.lead{font-size:16px;color:var(--ink)}
+  .small{font-size:11.5px;color:var(--muted)}
+  .mute{color:var(--muted)}
+
+  /* Placeholder boxes (image / video) */
+  .placeholder{
+    position:relative;
+    background-color:#ebe9e0;
+    background-image:repeating-linear-gradient(135deg,#dcd9cc 0 1px,transparent 1px 14px);
+    border:1px solid var(--line-soft);
+    display:flex;align-items:center;justify-content:center;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--muted);
+    text-align:center;padding:14px;
+  }
+  .placeholder .play{
+    width:36px;height:36px;border-radius:50%;border:1.5px solid currentColor;
+    display:flex;align-items:center;justify-content:center;margin-bottom:10px;
+  }
+  .placeholder .play::after{content:"";display:block;border-style:solid;border-width:6px 0 6px 9px;border-color:transparent transparent transparent currentColor;margin-left:2px}
+  .ph-tag{position:absolute;top:8px;left:8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--muted);background:rgba(255,255,255,.65);padding:2px 6px;border:1px solid var(--line-soft)}
+  .section.dark .ph-tag{background:rgba(0,0,0,.4);border-color:#333;color:#999}
+
+  /* Buttons (CTA placeholders) */
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 22px;border:1.5px solid var(--line);background:var(--cta);color:var(--cta-ink);
+    font-weight:700;font-size:14px;letter-spacing:.01em;
+    border-radius:4px;cursor:pointer;
+  }
+  .btn.primary{background:#e9b870;border-color:#1a1a1a}
+  .btn.dark{background:#1a1a1a;color:#f4f3ef;border-color:#1a1a1a}
+  .btn.ghost{background:transparent}
+  .btn.lg{padding:18px 28px;font-size:16px}
+  .btn.xl{padding:22px 36px;font-size:18px;width:100%;justify-content:center}
+  .section.dark .btn{border-color:#f4f3ef}
+  .section.dark .btn.ghost{color:#f4f3ef}
+
+  .seals{display:flex;gap:18px;flex-wrap:wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--muted);margin-top:14px}
+  .seals span::before{content:"●  ";color:var(--line-soft)}
+
+  /* ============ NAV / STICKY BAR ============ */
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 32px;border-bottom:1px solid #2a2a2a;background:#1a1a1aee;color:var(--dark-ink);
+    backdrop-filter:blur(6px);
+  }
+  .nav .logo{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.02em}
+  .nav .logo .mark{width:22px;height:22px;border:1.5px solid currentColor;display:inline-block}
+  .nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font-size:13px;color:#cfcfcf}
+  .nav .btn{padding:8px 14px;font-size:12px}
+
+  .stickybar{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:12px 32px;background:#1a1a1a;color:#f4f3ef;
+    border-top:1px solid #2a2a2a;
+  }
+  .stickybar .price{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+  .stickybar .price b{color:#e9b870}
+  .stickybar-note{
+    text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--note);
+    padding:6px;background:#fff;border-top:1px dashed var(--line-soft);border-bottom:1px dashed var(--line-soft);
+  }
+
+  /* ============ HERO ============ */
+  .hero{position:relative;min-height:520px;padding:0;display:flex;align-items:stretch}
+  .hero .bg{position:absolute;inset:0;background-color:#0d0d0d;background-image:repeating-linear-gradient(135deg,#191919 0 1px,transparent 1px 18px)}
+  .hero .bg .ph-tag{background:rgba(0,0,0,.5);color:#aaa;border-color:#333;top:16px;left:16px}
+  .hero .bg .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:64px;border:1.5px solid #555;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#777}
+  .hero .bg .play::after{content:"";border-style:solid;border-width:10px 0 10px 14px;border-color:transparent transparent transparent #777;margin-left:3px}
+  .hero .bg .caption{position:absolute;left:50%;top:calc(50% + 50px);transform:translateX(-50%);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:#666;text-align:center;width:280px}
+  .hero .overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,13,13,.4) 0%,rgba(13,13,13,.85) 80%)}
+  .hero .content{position:relative;z-index:2;align-self:flex-end;width:100%;padding:72px 72px 56px;color:#f4f3ef}
+  .hero .urgency{display:inline-block;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#e9b870;border:1px solid #e9b870;padding:5px 10px;margin-bottom:22px}
+  .hero h1{font-size:46px;line-height:1.05;font-weight:700;letter-spacing:-.015em;margin:0 0 18px;max-width:920px}
+  .hero .sub{font-size:18px;color:#cfcfcf;max-width:720px;margin:0 0 28px;line-height:1.5}
+  .hero .cta-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .hero .microproof{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:#9a9a9a}
+
+  /* ============ S2 — DOR ============ */
+  .pain-list{list-style:none;padding:0;margin:18px 0;display:grid;gap:10px;max-width:780px}
+  .pain-list li{display:grid;grid-template-columns:24px 1fr;gap:14px;padding:16px 18px;border:1px solid var(--line-soft);background:var(--card)}
+  .pain-list li::before{content:"—";color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace}
+  .closer{display:inline-block;margin-top:18px;padding:10px 0;border-top:1px solid var(--line);font-weight:700;font-size:18px}
+
+  /* ============ S3 — FUTURO GRID ============ */
+  .vid-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+  .vid-grid .placeholder{aspect-ratio:9/16;flex-direction:column}
+  .vid-grid .label-row{display:flex;justify-content:space-between;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:#888;margin-top:6px}
+
+  /* ============ S5 — PERFIS CARDS ============ */
+  .perfis{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:18px;margin-top:24px}
+  .perfil{padding:24px;border:1px solid var(--line);background:var(--card);min-height:240px;display:flex;flex-direction:column}
+  .perfil.hi{border-width:2px}
+  .perfil .ico{width:36px;height:36px;border:1.5px solid var(--line);margin-bottom:18px;display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--muted)}
+  .perfil .badge{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--note);margin-bottom:6px}
+
+  /* ============ S6 — TIMELINE AULAS ============ */
+  .timeline{margin-top:22px;border-top:1px solid var(--line)}
+  .aula{display:grid;grid-template-columns:90px 60px 1fr 32px;gap:20px;align-items:start;padding:18px 4px;border-bottom:1px solid var(--line-soft)}
+  .aula .date{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--muted)}
+  .aula .num{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:24px;font-weight:700;color:var(--ink)}
+  .aula .ttl{font-weight:700;font-size:15px;margin-bottom:4px}
+  .aula .desc{font-size:13px;color:var(--muted);max-width:640px}
+  .aula .prof{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--note);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+  .aula .chev{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--muted);text-align:right}
+
+  /* ============ S7 — PROFESSORES ============ */
+  .profs{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:22px}
+  .prof-card{border:1px solid var(--line-soft);background:var(--card);padding:20px;display:flex;flex-direction:column;gap:10px}
+  .prof-card .photo{aspect-ratio:1/1;background-color:#ebe9e0;background-image:repeating-linear-gradient(135deg,#dcd9cc 0 1px,transparent 1px 14px);border:1px solid var(--line-soft);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--muted)}
+  .prof-card .pname{font-weight:700;font-size:15px;margin-top:6px}
+  .prof-card .pbio{font-size:12.5px;color:var(--muted);line-height:1.4}
+  .prof-card .pnum{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--note);border-top:1px dashed var(--line-soft);padding-top:8px;margin-top:auto}
+
+  /* ============ S8 — SLIDER ============ */
+  .slider{position:relative;margin-top:24px;border:1px solid var(--line);background:var(--card)}
+  .slider .stage{display:grid;grid-template-columns:1fr 1fr;height:340px}
+  .slider .half{position:relative;background-color:#ebe9e0;background-image:repeating-linear-gradient(135deg,#dcd9cc 0 1px,transparent 1px 14px);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--muted);border-right:1px dashed var(--line)}
+  .slider .half:last-child{border-right:none;background-color:#dedbcb;background-image:repeating-linear-gradient(135deg,#cfccba 0 1px,transparent 1px 14px)}
+  .slider .handle{position:absolute;left:50%;top:0;bottom:0;width:2px;background:var(--line)}
+  .slider .handle::before{content:"⟷";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:36px;height:36px;background:#fff;border:1.5px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px}
+  .pair-thumbs{display:flex;gap:8px;margin-top:12px}
+  .pair-thumbs .thumb{flex:1;height:42px;background-color:#ebe9e0;background-image:repeating-linear-gradient(135deg,#dcd9cc 0 1px,transparent 1px 14px);border:1px solid var(--line-soft);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+  .pair-thumbs .thumb.active{outline:2px solid var(--ink)}
+
+  /* ============ S9 — DEPOIMENTOS ============ */
+  .testi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+  .testi{border:1px solid var(--line-soft);padding:22px;background:var(--card);display:flex;flex-direction:column;gap:14px;min-height:200px}
+  .testi .quote{font-size:14px;line-height:1.5}
+  .testi .who{display:flex;gap:12px;align-items:center;margin-top:auto}
+  .testi .who .av{width:40px;height:40px;border-radius:50%;background-color:#ebe9e0;background-image:repeating-linear-gradient(135deg,#dcd9cc 0 1px,transparent 1px 14px);border:1px solid var(--line-soft)}
+  .testi .who .nm{font-size:12px;font-weight:700}
+  .testi .who .rl{font-size:11px;color:var(--muted)}
+  .arrows{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+  .arrows .arr{width:36px;height:36px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,Consolas,monospace}
+
+  .logos{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:32px;padding-top:24px;border-top:1px dashed var(--line-soft)}
+  .logo-ph{height:36px;background-color:#ebe9e0;background-image:repeating-linear-gradient(135deg,#dcd9cc 0 1px,transparent 1px 14px);border:1px solid var(--line-soft);display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--muted)}
+
+  /* ============ S10 — OFERTA ============ */
+  .offer{display:grid;grid-template-columns:1.1fr 1fr;gap:36px;margin-top:18px}
+  .offer-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+  .offer-list li{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed #444;font-size:14px}
+  .offer-list li::before{content:"✓";color:#e9b870;font-weight:700;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .offer-card{background:#fff;color:var(--ink);border:1.5px solid var(--ink);padding:28px;display:flex;flex-direction:column;gap:14px}
+  .offer-card .strike{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--muted);text-decoration:line-through}
+  .offer-card .price-now{font-size:42px;font-weight:700;line-height:1;letter-spacing:-.01em}
+  .offer-card .parc{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--muted)}
+  .offer-card .scarcity{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--note);border:1px dashed var(--note);padding:6px 8px}
+  .offer-card .lote2{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--muted)}
+
+  /* ============ S11 — FAQ ============ */
+  .faq{margin-top:24px;border-top:1px solid var(--line)}
+  .faq-item{padding:18px 0;border-bottom:1px solid var(--line-soft);display:grid;grid-template-columns:1fr 24px;gap:14px;align-items:start}
+  .faq-q{font-weight:700;font-size:15px}
+  .faq-a{grid-column:1/-1;font-size:13.5px;color:var(--muted);margin-top:6px;max-width:780px}
+  .faq-item .icn{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--muted);text-align:right}
+
+  /* ============ S12 — URGÊNCIA ============ */
+  .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0;max-width:560px}
+  .cd-cell{border:1px solid #444;background:#0d0d0d;padding:18px 10px;text-align:center}
+  .cd-cell .n{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:34px;font-weight:700;color:#e9b870}
+  .cd-cell .l{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:#888;letter-spacing:.18em;text-transform:uppercase;margin-top:6px}
+
+  /* ============ S13 — PS ============ */
+  .ps{max-width:680px}
+  .ps p{font-size:15px;line-height:1.65;color:var(--ink-2);margin:0 0 14px}
+  .ps .sig{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--muted);margin-top:18px}
+
+  /* ============ S14 — FOOTER ============ */
+  .footer{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;padding:48px 72px;background:#111;color:#cfcfcf;font-size:13px}
+  .footer h4{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:#888;margin:0 0 12px;font-weight:700}
+  .footer ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+  .footer .legal{grid-column:1/-1;border-top:1px solid #2a2a2a;padding-top:20px;margin-top:8px;display:flex;justify-content:space-between;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:#666}
+
+  /* Legend */
+  .legend{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;
+    margin:32px 0 12px;padding:16px;border:1px solid var(--line-soft);background:#fbfaf6;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--ink-2);
+  }
+  .legend .row{display:flex;align-items:center;gap:10px}
+  .legend .sw{width:28px;height:18px;border:1px solid var(--line)}
+  .legend .sw.video{background-color:#ebe9e0;background-image:repeating-linear-gradient(135deg,#dcd9cc 0 1px,transparent 1px 8px)}
+  .legend .sw.cta{background:#e9b870}
+  .legend .sw.dark{background:#0d0d0d}
+  .legend .sw.note{background:transparent;border-left:3px solid var(--note);width:24px}
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- DOC HEADER -->
+  <header class="doc-head">
+    <div>
+      <p class="doc-title">Wireframe · Mid-Fi · Desktop 1320</p>
+      <h1 class="doc-h1">LP — Criando Vídeos com IA <em>/ para Negócios</em></h1>
+    </div>
+    <div class="doc-meta">
+      cursosia.mbx.academy<br/>
+      v1.0 · maio 2026<br/>
+      14 seções · scroll vertical
+    </div>
+  </header>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="row"><span class="sw video"></span><span>Placeholder vídeo / imagem</span></div>
+    <div class="row"><span class="sw cta"></span><span>CTA primário (âmbar no design final)</span></div>
+    <div class="row"><span class="sw dark"></span><span>Seção em fundo escuro (#0D0D0D)</span></div>
+    <div class="row"><span class="sw note"></span><span>Anotação de design / placeholder ⚠</span></div>
+  </div>
+
+  <!-- BROWSER FRAME -->
+  <div class="browser">
+    <div class="browser-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <div class="url">https://cursosia.mbx.academy/criando-videos-com-ia-para-negocios</div>
+    </div>
+
+    <!-- ============ NAV (sticky/fixed) ============ -->
+    <nav class="nav">
+      <div class="logo"><span class="mark"></span> mbx<span style="color:#e9b870">.academy</span></div>
+      <ul>
+        <li>Conteúdo</li><li>Professores</li><li>Oferta</li><li>FAQ</li>
+      </ul>
+      <button class="btn primary">Garantir vaga</button>
+    </nav>
+
+    <!-- ============ S1 · HERO ============ -->
+    <section class="section dark hero" data-screen-label="S1 Hero">
+      <span class="tag"><b>S1</b> · HERO · parar scroll em 3s</span>
+      <div class="bg">
+        <span class="ph-tag">video.bg.mp4 · loop · sem áudio · 1080p · ≤8MB</span>
+        <span class="play"></span>
+        <span class="caption">Pexels #857251 (placeholder)<br/>→ substituir por vídeo IA próprio</span>
+      </div>
+      <div class="overlay"></div>
+      <div class="content">
+        <span class="urgency">⚠ Restam 27 vagas no Lote 1</span>
+        <h1>"Quem não tá fazendo vídeo, não existe.<br/>Quem tá pagando caro pra fazer, tá perdendo dinheiro."</h1>
+        <p class="sub">Aprenda a produzir vídeos profissionais com IA em 4 semanas. Sem equipe. Sem produtora. Sem orçamento de agência.</p>
+        <div class="cta-row">
+          <button class="btn primary lg">Garantir minha vaga →</button>
+          <span class="microproof">⚠ +340 alunos formados na turma anterior de IA</span>
+        </div>
+      </div>
+      <div class="anno" style="top:90px">
+        <span class="ttl">Hero — notas</span>
+        Vídeo full-bleed com overlay 40→85%. Headline 46px. Microprova abaixo do CTA. Badge urgência integra com plataforma de venda.
+      </div>
+    </section>
+
+    <!-- ============ S2 · DOR ============ -->
+    <section class="section" data-screen-label="S2 Dor">
+      <span class="tag"><b>S2</b> · A DOR · gancho emocional</span>
+      <p class="eyebrow">Seção 2 / Empatia</p>
+      <h2 class="h2 huge">Você sabe que precisa estar fazendo vídeo. Mas…</h2>
+      <p class="copy lead">Você abre o Instagram e vê o concorrente com vídeo profissional. Você abre o TikTok e vê marca nova bombando com conteúdo que parece feito por agência. Você sabe que não dá mais pra ficar de fora. Mas:</p>
+      <ul class="pain-list">
+        <li>Pagar R$3.000–R$10.000 por um único vídeo institucional não cabe no seu caixa</li>
+        <li>Contratar equipe interna de vídeo é custo fixo que não faz sentido pro tamanho do seu negócio</li>
+        <li>Esperar 2 semanas pra agência entregar uma peça é tempo demais quando a tendência muda toda semana</li>
+        <li>Fazer sozinho, sem saber, gera conteúdo que envergonha mais do que vende</li>
+      </ul>
+      <span class="closer">Tem um caminho novo. E ele começou ontem.</span>
+      <div class="anno">
+        <span class="ttl">S2 — notas</span>
+        4 bullets em cards finos, 1 por linha. Fechamento em peso 700, sem bullet, com filete superior.
+      </div>
+    </section>
+
+    <!-- ============ S3 · FUTURO ============ -->
+    <section class="section dark" data-screen-label="S3 Futuro">
+      <span class="tag"><b>S3</b> · O FUTURO · visão aspiracional</span>
+      <p class="eyebrow" style="color:#888">Seção 3 / Prova visual</p>
+      <h2 class="h2 huge">Esse é o nível que você vai conseguir entregar. Sozinho.</h2>
+      <p class="copy" style="color:#bbb">Cada vídeo abaixo foi feito por uma pessoa só, em menos de um dia, com as ferramentas que você vai dominar nesse curso.</p>
+      <div class="vid-grid">
+        <div class="placeholder"><div><div class="play"></div>Anúncio · 9:16 · loop</div><span class="ph-tag">vid_01_anuncio.mp4</span></div>
+        <div class="placeholder"><div><div class="play"></div>Orgânico · 9:16 · loop</div><span class="ph-tag">vid_02_organico.mp4</span></div>
+        <div class="placeholder"><div><div class="play"></div>Institucional · 9:16</div><span class="ph-tag">vid_03_institucional.mp4</span></div>
+        <div class="placeholder"><div><div class="play"></div>Produto · 9:16 · loop</div><span class="ph-tag">vid_04_produto.mp4</span></div>
+        <div class="placeholder"><div><div class="play"></div>Anúncio 2 · 9:16</div><span class="ph-tag">vid_05.mp4</span></div>
+        <div class="placeholder"><div><div class="play"></div>Orgânico 2 · 9:16</div><span class="ph-tag">vid_06.mp4</span></div>
+      </div>
+      <p class="copy" style="color:#888;margin-top:24px;font-style:italic">Não é mágica. É método.</p>
+      <div class="anno">
+        <span class="ttl">S3 — notas</span>
+        Grid 3×2 de vídeos 9:16 em loop, sem som. Lazy load (estão abaixo do fold). Máx 5MB cada.
+      </div>
+    </section>
+
+    <!-- ============ S4 · VIRADA ============ -->
+    <section class="section" data-screen-label="S4 Virada">
+      <span class="tag"><b>S4</b> · A VIRADA · apresenta o curso</span>
+      <p class="eyebrow">Seção 4 / Solução</p>
+      <h2 class="h2 huge">Criando Vídeos com IA para Negócios</h2>
+      <p class="copy lead">Um curso ao vivo de 4 semanas para quem quer parar de depender de agência, produtora e equipe para produzir vídeo profissional.</p>
+      <p class="copy">Em 10 aulas práticas e 20 horas de conteúdo, você sai sabendo construir vídeos do zero — da ideia até a entrega — usando as ferramentas de IA mais avançadas do mercado. Não é curso de teoria. <b>Você produz nas aulas. Você sai com vídeos prontos.</b></p>
+      <button class="btn ghost">Ver o conteúdo completo ↓</button>
+      <div class="anno">
+        <span class="ttl">S4 — notas</span>
+        Ponte entre dor (S2) e futuro (S3). CTA secundário ancora para S6. Sem imagem.
+      </div>
+    </section>
+
+    <!-- ============ S5 · PERFIS ============ -->
+    <section class="section" data-screen-label="S5 Perfis">
+      <span class="tag"><b>S5</b> · PARA QUEM É · 3 perfis</span>
+      <p class="eyebrow">Seção 5 / Auto-seleção</p>
+      <h2 class="h2">Para quem é esse curso</h2>
+      <div class="perfis">
+        <div class="perfil hi">
+          <div class="ico">[ ico ]</div>
+          <span class="badge">Perfil primário</span>
+          <h3 class="h3">Empreendedor</h3>
+          <p class="copy" style="font-size:13.5px">Você tem um negócio e está cansado de gastar fortuna com agência ou de postar conteúdo amador. Quer assumir o controle da sua comunicação visual.</p>
+        </div>
+        <div class="perfil">
+          <div class="ico">[ ico ]</div>
+          <h3 class="h3">Marketing / Social Media</h3>
+          <p class="copy" style="font-size:13.5px">Você precisa entregar mais vídeo, mais rápido, com mais qualidade — sem aumentar equipe nem estourar prazo.</p>
+        </div>
+        <div class="perfil">
+          <div class="ico">[ ico ]</div>
+          <h3 class="h3">Designer / Criativo</h3>
+          <p class="copy" style="font-size:13.5px">Você já domina a parte visual e quer dominar a próxima fronteira. Adicionar vídeo com IA ao seu repertório e cobrar mais pelos seus projetos.</p>
+        </div>
+      </div>
+      <p class="copy" style="margin-top:22px;font-style:italic">Não importa de onde você vem. Importa onde você quer chegar.</p>
+      <div class="anno">
+        <span class="ttl">S5 — notas</span>
+        Card 1 com peso visual maior (border 2px). Mobile: empilhar verticalmente, primário no topo.
+      </div>
+    </section>
+
+    <!-- ============ S6 · CRONOGRAMA ============ -->
+    <section class="section" data-screen-label="S6 Cronograma">
+      <span class="tag"><b>S6</b> · CRONOGRAMA · 10 aulas</span>
+      <p class="eyebrow">Seção 6 / Densidade</p>
+      <h2 class="h2 huge">10 aulas ao vivo. 20 horas. Do zero ao vídeo profissional.</h2>
+      <p class="copy">Aulas às segundas-feiras a partir de 15/06/2026. Todas gravadas com acesso vitalício.</p>
+      <div class="timeline">
+        <div class="aula"><span class="date">16/06/2026</span><span class="num">01</span>
+          <div><div class="ttl">Introdução ao vídeo com IA</div><div class="desc">Panorama do ecossistema, ferramentas que importam e fluxo básico de produção. Você sai da primeira aula com uma cena pronta.</div><div class="prof">Henrique Zerati</div></div><span class="chev">+</span>
+        </div>
+        <div class="aula"><span class="date">23/06/2026</span><span class="num">02</span>
+          <div><div class="ttl">Geração de imagens para vídeo</div><div class="desc">Como gerar cenas com consistência de personagem, estilo e enquadramento para image-to-video.</div><div class="prof">José / Wess</div></div><span class="chev">+</span>
+        </div>
+        <div class="aula"><span class="date">30/06/2026</span><span class="num">03</span>
+          <div><div class="ttl">Direção visual e consistência estética</div><div class="desc">Como manter unidade visual ao longo de múltiplas cenas. Identidade estética com IA.</div><div class="prof">Henrique Zerati</div></div><span class="chev">+</span>
+        </div>
+        <div class="aula"><span class="date">07/07/2026</span><span class="num">04</span>
+          <div><div class="ttl">Roteiro e marketing para vídeos curtos</div><div class="desc">Estrutura narrativa para conteúdo e anúncios com foco em retenção, clareza e conversão.</div><div class="prof">Felipe Amaral</div></div><span class="chev">+</span>
+        </div>
+        <div class="aula"><span class="date">14/07/2026</span><span class="num">05</span>
+          <div><div class="ttl">Prompting para vídeo</div><div class="desc">Transformação do roteiro em prompts controláveis para geração de vídeo sem resultados aleatórios.</div><div class="prof">Henrique Zerati</div></div><span class="chev">+</span>
+        </div>
+        <div class="aula"><span class="date">21/07/2026</span><span class="num">06</span>
+          <div><div class="ttl">Image-to-video e Movimento</div><div class="desc">Execução da transformação de imagens em vídeo com controle de movimento, profundidade e fluidez.</div><div class="prof">Henrique Zerati</div></div><span class="chev">+</span>
+        </div>
+        <div class="aula"><span class="date">28/07/2026</span><span class="num">07</span>
+          <div><div class="ttl">Direção de Câmera e Variações de Cena</div><div class="desc">Uso intencional de pan, tilt, dolly, zoom e variação de planos para aumentar retenção.</div><div class="prof">Henrique Zerati</div></div><span class="chev">+</span>
+        </div>
+        <div class="aula"><span class="date">04/08/2026</span><span class="num">08</span>
+          <div><div class="ttl">Ferramentas + workflow híbrido</div><div class="desc">Fluxo eficiente combinando diferentes ferramentas de IA e edição por etapa de produção.</div><div class="prof">Henrique Zerati</div></div><span class="chev">+</span>
+        </div>
+        <div class="aula"><span class="date">11/08/2026</span><span class="num">09</span>
+          <div><div class="ttl">Som, edição e finalização</div><div class="desc">Integração de som, voz e montagem para dar ritmo, clareza e impacto ao vídeo final.</div><div class="prof">Thales Medeiros</div></div><span class="chev">+</span>
+        </div>
+        <div class="aula"><span class="date">18/08/2026</span><span class="num">10</span>
+          <div><div class="ttl">Projeto final + aplicação real</div><div class="desc">Construção completa de um vídeo com IA, do conceito à entrega. Análise de decisões criativas.</div><div class="prof">Henrique Zerati</div></div><span class="chev">+</span>
+        </div>
+      </div>
+      <p class="copy" style="margin-top:24px;font-weight:700">É o cronograma mais denso e atualizado de produção de vídeo com IA do Brasil.</p>
+      <div class="anno">
+        <span class="ttl">S6 — notas</span>
+        Accordion: clica → expande descrição expandida + materiais. Estado default colapsado. Primeira aula pode vir aberta.
+      </div>
+    </section>
+
+    <!-- ============ S7 · PROFESSORES ============ -->
+    <section class="section" data-screen-label="S7 Professores">
+      <span class="tag"><b>S7</b> · PROFESSORES · autoridade</span>
+      <p class="eyebrow">Seção 7 / Quebra de objeção</p>
+      <h2 class="h2">4 especialistas. Cada um no que faz de melhor.</h2>
+      <div class="profs">
+        <div class="prof-card">
+          <div class="photo">⚠ foto<br/>1:1</div>
+          <div class="pname">Henrique Zerati</div>
+          <div class="pbio">⚠ Referência em produção de vídeo com IA no Brasil. Já produziu para X marcas de grande porte.</div>
+          <div class="pnum">⚠ +80 campanhas entregues</div>
+        </div>
+        <div class="prof-card">
+          <div class="photo">⚠ foto<br/>1:1</div>
+          <div class="pname">José / Wess</div>
+          <div class="pbio">⚠ Especialista em geração de imagens com IA. Background em direção de arte digital.</div>
+          <div class="pnum">⚠ +120 projetos com IA</div>
+        </div>
+        <div class="prof-card">
+          <div class="photo">⚠ foto<br/>1:1</div>
+          <div class="pname">Felipe Amaral</div>
+          <div class="pbio">⚠ Copywriter e estrategista de conteúdo. Especialista em roteiro para vídeo curto.</div>
+          <div class="pnum">⚠ +R$5M em vendas geradas</div>
+        </div>
+        <div class="prof-card">
+          <div class="photo">⚠ foto<br/>1:1</div>
+          <div class="pname">Thales Medeiros</div>
+          <div class="pbio">⚠ Editor e finalizador com background em pós-produção audiovisual profissional.</div>
+          <div class="pnum">⚠ +10 anos de mercado</div>
+        </div>
+      </div>
+      <p class="copy" style="margin-top:22px;font-style:italic">Quatro especialistas. Cada um no que faz de melhor. Aulas ao vivo com Q&amp;A em tempo real.</p>
+      <div class="anno">
+        <span class="ttl">S7 — notas</span>
+        Fotos 1:1 padronizadas, fundo neutro. Bio em 2 linhas. Número destaque em mono, com filete acima.
+      </div>
+    </section>
+
+    <!-- ============ S8 · DIFERENCIAL · SLIDER ============ -->
+    <section class="section" data-screen-label="S8 Slider">
+      <span class="tag"><b>S8</b> · DIFERENCIAL · before/after slider</span>
+      <p class="eyebrow">Seção 8 / Demonstração técnica</p>
+      <h2 class="h2 huge">De uma imagem parada a um vídeo profissional. Em minutos.</h2>
+      <p class="copy">Arrasta o slider e vê a transformação que você vai aprender a fazer.</p>
+      <div class="slider">
+        <div class="stage">
+          <div class="half">imagem estática<br/>(antes)<span class="ph-tag">par_01_img.jpg</span></div>
+          <div class="half"><div><div class="play" style="margin:0 auto 8px;width:36px;height:36px;border:1.5px solid currentColor;border-radius:50%;display:flex;align-items:center;justify-content:center"></div>vídeo gerado<br/>(depois)</div><span class="ph-tag" style="left:auto;right:8px">par_01_vid.mp4</span></div>
+        </div>
+        <div class="handle"></div>
+      </div>
+      <div class="pair-thumbs">
+        <div class="thumb active">par 01 · produto</div>
+        <div class="thumb">par 02 · retrato</div>
+        <div class="thumb">par 03 · cenário</div>
+        <div class="thumb">par 04 ⚠</div>
+        <div class="thumb">par 05 ⚠</div>
+      </div>
+      <div class="anno">
+        <span class="ttl">S8 — notas</span>
+        Crítico em mobile: testar gestos touch + carregamento em 4G. Drag horizontal no handle revela vídeo. 3–5 pares selecionáveis pelos thumbs.
+      </div>
+    </section>
+
+    <!-- ============ S9 · DEPOIMENTOS ============ -->
+    <section class="section" data-screen-label="S9 Prova social">
+      <span class="tag"><b>S9</b> · PROVA SOCIAL · depoimentos</span>
+      <p class="eyebrow">Seção 9 / Validação</p>
+      <h2 class="h2">O que disseram os alunos da nossa última turma de IA</h2>
+      <p class="small mute">Bandeira: "Alunos da turma anterior do nosso curso de IA para fotos"</p>
+      <div class="testi-row">
+        <div class="testi">
+          <div class="quote">⚠ "Economizei R$8.000 em produção no primeiro mês depois do curso."</div>
+          <div class="who"><div class="av"></div><div><div class="nm">[Nome]</div><div class="rl">[Cargo] · [Empresa]</div></div></div>
+        </div>
+        <div class="testi">
+          <div class="quote">⚠ "Em 2 semanas eu já estava entregando conteúdo que antes levava um mês pra agência fazer."</div>
+          <div class="who"><div class="av"></div><div><div class="nm">[Nome]</div><div class="rl">[Cargo] · [Empresa]</div></div></div>
+        </div>
+        <div class="testi">
+          <div class="quote">⚠ "Nunca tinha mexido com vídeo na vida. Hoje produzo sozinho."</div>
+          <div class="who"><div class="av"></div><div><div class="nm">[Nome]</div><div class="rl">[Cargo] · [Empresa]</div></div></div>
+        </div>
+      </div>
+      <div class="arrows"><div class="arr">←</div><div class="arr">→</div></div>
+
+      <h4 class="small mute" style="margin-top:36px;letter-spacing:.18em;text-transform:uppercase">Empresas onde estão os alunos</h4>
+      <div class="logos">
+        <div class="logo-ph">logo 01</div><div class="logo-ph">logo 02</div><div class="logo-ph">logo 03</div>
+        <div class="logo-ph">logo 04</div><div class="logo-ph">logo 05</div><div class="logo-ph">logo 06</div>
+      </div>
+      <div class="anno">
+        <span class="ttl">S9 — notas</span>
+        Carrossel de 4–6 cards. Coletar reais ao fim da turma anterior. Logos via Logoipsum até substituição.
+      </div>
+    </section>
+
+    <!-- ============ S10 · OFERTA ============ -->
+    <section class="section dark" data-screen-label="S10 Oferta">
+      <span class="tag"><b>S10</b> · A OFERTA · card de decisão</span>
+      <p class="eyebrow" style="color:#888">Seção 10 / Conversão</p>
+      <h2 class="h2 huge">Tudo o que você leva ao entrar agora:</h2>
+      <div class="offer">
+        <ul class="offer-list">
+          <li>10 aulas ao vivo (20 horas de conteúdo prático)</li>
+          <li>Acesso vitalício às gravações de todas as aulas</li>
+          <li>4 professores especialistas com Q&amp;A em tempo real</li>
+          <li>Certificado de conclusão</li>
+          <li><b>Bônus:</b> Acesso à comunidade exclusiva de alunos</li>
+          <li><b>Bônus:</b> Pack de prompts prontos para vídeo</li>
+          <li><b>Bônus:</b> Biblioteca de referências e templates de roteiro</li>
+          <li><b>Bônus:</b> Sessão extra de Q&amp;A ao vivo com Henrique Zerati</li>
+          <li><b>Garantia de 7 dias</b> — devolução total (CDC)</li>
+        </ul>
+        <div class="offer-card">
+          <div class="strike">De R$500</div>
+          <div>
+            <div class="price-now">R$ 298</div>
+            <div class="parc">ou 12× de R$ 29,80</div>
+          </div>
+          <div class="scarcity">⚠ Restam apenas 27 vagas no Lote 1.</div>
+          <div class="lote2">⚠ Lote 2 entra em 25/05/2026 por R$ 398</div>
+          <button class="btn primary xl">GARANTIR MINHA VAGA AGORA</button>
+          <div class="seals">
+            <span>🔒 Pagamento 100% seguro</span>
+            <span>Início em 15/06/2026</span>
+            <span>Garantia de 7 dias</span>
+          </div>
+        </div>
+      </div>
+      <div class="anno">
+        <span class="ttl">S10 — notas</span>
+        Card de oferta sobre fundo escuro, contraste forte. Sticky bar some quando esta seção entra na viewport.
+      </div>
+    </section>
+
+    <!-- ============ S11 · FAQ ============ -->
+    <section class="section" data-screen-label="S11 FAQ">
+      <span class="tag"><b>S11</b> · FAQ · objeções</span>
+      <p class="eyebrow">Seção 11 / Última dúvida</p>
+      <h2 class="h2">Perguntas frequentes</h2>
+      <div class="faq">
+        <div class="faq-item"><div class="faq-q">E se eu nunca mexi com edição de vídeo na vida?</div><div class="icn">−</div>
+          <div class="faq-a">O curso começa do absoluto zero. Se você sabe abrir um navegador, consegue acompanhar.</div>
+        </div>
+        <div class="faq-item"><div class="faq-q">Preciso comprar muitas ferramentas pagas?</div><div class="icn">+</div></div>
+        <div class="faq-item"><div class="faq-q">E se eu não puder assistir ao vivo?</div><div class="icn">+</div></div>
+        <div class="faq-item"><div class="faq-q">Esse curso serve pro meu segmento?</div><div class="icn">+</div></div>
+        <div class="faq-item"><div class="faq-q">Já fiz outros cursos de IA. Esse vai ser diferente?</div><div class="icn">+</div></div>
+        <div class="faq-item"><div class="faq-q">R$298 parece caro pra mim agora.</div><div class="icn">+</div></div>
+        <div class="faq-item"><div class="faq-q">Tem garantia?</div><div class="icn">+</div></div>
+      </div>
+      <div class="anno">
+        <span class="ttl">S11 — notas</span>
+        Accordion com aria-expanded. Primeira aberta por padrão como prova. Perguntas = objeções reais.
+      </div>
+    </section>
+
+    <!-- ============ S12 · URGÊNCIA ============ -->
+    <section class="section dark" data-screen-label="S12 Urgência">
+      <span class="tag"><b>S12</b> · URGÊNCIA · contador</span>
+      <p class="eyebrow" style="color:#888">Seção 12 / Última chamada</p>
+      <h2 class="h2 huge">⚠ O Lote 1 fecha em:</h2>
+      <div class="countdown">
+        <div class="cd-cell"><div class="n">02</div><div class="l">dias</div></div>
+        <div class="cd-cell"><div class="n">14</div><div class="l">horas</div></div>
+        <div class="cd-cell"><div class="n">37</div><div class="l">min</div></div>
+        <div class="cd-cell"><div class="n">52</div><div class="l">seg</div></div>
+      </div>
+      <p class="copy" style="color:#bbb">Ou quando as 50 vagas acabarem. O que vier primeiro. Depois disso, o preço sobe para R$398 e a turma começa em 15 de junho.</p>
+      <button class="btn primary lg">QUERO MINHA VAGA NO LOTE 1</button>
+      <div class="anno">
+        <span class="ttl">S12 — notas</span>
+        Countdown JS sincronizado com data de encerramento Lote 1. Ao zerar: "Lote 1 encerrado".
+      </div>
+    </section>
+
+    <!-- ============ S13 · PS ============ -->
+    <section class="section" data-screen-label="S13 PS">
+      <span class="tag"><b>S13</b> · P.S. · carta final</span>
+      <p class="eyebrow">Seção 13 / Tom pessoal</p>
+      <h2 class="h2 huge">Uma última coisa.</h2>
+      <div class="ps">
+        <p>Daqui a 6 meses, fazer vídeo com IA não vai ser diferencial. Vai ser o básico. Quem aprender agora vai estar 6 meses na frente de todo mundo.</p>
+        <p>Você pode esperar e aprender depois — quando for tarde, quando todo mundo já estiver fazendo, quando o seu vídeo for só mais um.</p>
+        <p>Ou você pode entrar agora, pagar o menor preço que esse curso vai ter, e sair em 4 semanas com a habilidade que vai diferenciar o seu negócio pelos próximos anos.</p>
+        <p><b>A escolha é sua. Mas ela tem prazo.</b></p>
+        <button class="btn primary lg" style="margin-top:14px">ENTRAR PRA TURMA AGORA</button>
+        <div class="sig">— Henrique Zerati e equipe MBX Academy</div>
+      </div>
+      <div class="anno">
+        <span class="ttl">S13 — notas</span>
+        Tom humano, quase pessoal. Largura de leitura curta (≈680px). Pega quem leu tudo e ainda hesita.
+      </div>
+    </section>
+
+    <!-- ============ S14 · FOOTER ============ -->
+    <footer class="footer" data-screen-label="S14 Footer">
+      <div>
+        <div class="logo" style="display:flex;align-items:center;gap:10px;font-weight:700;color:#f4f3ef;margin-bottom:14px"><span style="width:22px;height:22px;border:1.5px solid currentColor;display:inline-block"></span> mbx<span style="color:#e9b870">.academy</span></div>
+        <p style="color:#888;font-size:12.5px;max-width:340px;line-height:1.5">cursosia.mbx.academy — formação ao vivo em produção de vídeo com IA para negócios.</p>
+      </div>
+      <div>
+        <h4>Curso</h4>
+        <ul><li>Conteúdo</li><li>Professores</li><li>Oferta</li><li>FAQ</li></ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul><li>⚠ Política de privacidade</li><li>⚠ Termos de uso</li></ul>
+      </div>
+      <div>
+        <h4>Contato</h4>
+        <ul><li>Instagram</li><li>YouTube</li><li>⚠ wa.me/...</li></ul>
+      </div>
+      <div class="legal">
+        <span>© 2026 MBX Academy</span>
+        <span>CNPJ ⚠ · suporte@cursosia.mbx.academy</span>
+      </div>
+    </footer>
+
+    <!-- ============ STICKY BAR (global) ============ -->
+    <div class="stickybar-note">↑ Sticky bar global · aparece após 800px de scroll · some quando S10 entra na viewport ↑</div>
+    <div class="stickybar">
+      <div class="price">Lote 1: <b>R$ 298</b> · ou 12× R$ 29,80 · <span style="color:#888">Início 15/06/2026</span></div>
+      <button class="btn primary">Garantir vaga →</button>
+    </div>
+
+  </div><!-- /browser -->
+
+  <!-- FOOTNOTE / LEGEND -->
+  <div class="legend" style="margin-top:32px">
+    <div class="row" style="grid-column:1/-1;display:block">
+      <b>Notas globais.</b>
+      <span class="mute"> Wireframe segue 1:1 a especificação <code>especificacao_lp_videos_ia.docx</code>. Itens marcados com ⚠ são placeholders do Anexo A — substituir antes do lançamento.
+      Tipografia final sugerida: Inter / Syne / Neue Haas (400 + 700). Paleta final: fundo #0D0D0D, texto claro, acento âmbar/laranja.
+      Mobile breakpoints: 375 / 768 / 1280. Hero ≤8MB, vídeos do grid ≤5MB cada, lazy load abaixo do fold.</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
