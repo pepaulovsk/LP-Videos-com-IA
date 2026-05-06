@@ -238,11 +238,26 @@
     }
   });
 
-  /* ---------- Pair thumbs (cosmetic — switch active) ---------- */
+  /* ---------- Pair thumbs — switch active + update compare content ---------- */
   document.querySelectorAll('.pair-thumb').forEach(t => {
     t.addEventListener('click', () => {
       document.querySelectorAll('.pair-thumb').forEach(x => x.classList.remove('active'));
       t.classList.add('active');
+
+      const img = t.dataset.img;
+      const video = t.dataset.video;
+      const compare = document.querySelector('.compare');
+      if (!compare) return;
+
+      const before = compare.querySelector('.side.before');
+      const afterVid = compare.querySelector('.side.after video');
+
+      if (before && img) before.style.backgroundImage = `url('${img}')`;
+      if (afterVid && video) {
+        afterVid.src = video;
+        afterVid.load();
+        afterVid.play().catch(() => {});
+      }
     });
   });
 

@@ -771,23 +771,17 @@ ul{list-style:none;margin:0;padding:0}
   position:absolute;inset:0;
 }
 .compare .side.before{
-  background:linear-gradient(135deg, oklch(0.32 0.06 30) 0%, oklch(0.18 0.04 25) 100%);
-}
-.compare .side.before::after{
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse at 35% 50%, oklch(0.55 0.08 35 / .4), transparent 55%),
-    repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 1px, transparent 1px 14px);
+  background-size:cover;
+  background-position:center;
 }
 .compare .side.after{
-  background:linear-gradient(135deg, oklch(0.45 0.13 50) 0%, oklch(0.25 0.10 35) 100%);
   clip-path:inset(0 0 0 50%);
 }
-.compare .side.after::after{
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(ellipse at 65% 45%, oklch(0.78 0.14 78 / .35), transparent 50%),
-    radial-gradient(ellipse at 70% 70%, oklch(0.68 0.16 60 / .35), transparent 55%);
+.compare .side.after video{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  pointer-events:none;
 }
 .compare .label{
   position:absolute;top:18px;
@@ -832,6 +826,7 @@ ul{list-style:none;margin:0;padding:0}
   font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2);
 }
 .pair-thumb .grad{position:absolute;inset:0;background:linear-gradient(135deg, oklch(0.40 0.10 var(--h,40)), oklch(0.20 0.05 var(--h,40)))}
+.pair-thumb img.thumb-preview{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 
 /* ============================================================
    S9 — DEPOIMENTOS
