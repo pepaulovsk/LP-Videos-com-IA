@@ -301,13 +301,43 @@
     </div>
     <div class="logos-strip reveal">
       <div class="label">Empresas onde estão os alunos</div>
-      <div class="logos">
-        <div class="logo-ph" style="-webkit-mask-image:linear-gradient(90deg,#000 30%,transparent 31%,#000 35%,transparent 36%,#000 70%);mask-image:linear-gradient(90deg,#000 30%,transparent 31%,#000 35%,transparent 36%,#000 70%)"></div>
-        <div class="logo-ph" style="background:var(--ink-2);mask:none;-webkit-mask:none;border-radius:4px;height:18px;align-self:center;width:80%"></div>
-        <div class="logo-ph" style="background:radial-gradient(circle,var(--ink-2) 30%,transparent 31%);height:24px;width:24px;justify-self:center"></div>
-        <div class="logo-ph" style="background:var(--ink-2);mask:none;-webkit-mask:none;height:14px;width:90%;clip-path:polygon(0 0,100% 0,90% 100%,10% 100%)"></div>
-        <div class="logo-ph" style="background:var(--ink-2);mask:none;-webkit-mask:none;border-radius:50%;height:24px;width:24px;justify-self:center"></div>
-        <div class="logo-ph" style="background:var(--ink-2);mask:none;-webkit-mask:none;height:16px;width:90%"></div>
+      <div class="logos-scroll">
+        <div class="logos-track">
+          <span class="logo-item"><img src="assets/logos/Shopee.svg" alt="Shopee"></span>
+          <span class="logo-item"><img src="assets/logos/Sebrae.svg" alt="Sebrae"></span>
+          <span class="logo-item"><img src="assets/logos/VIVO.svg" alt="Vivo"></span>
+          <span class="logo-item"><img src="assets/logos/Caixa_Economica_Federal.svg" alt="Caixa Econômica Federal"></span>
+          <span class="logo-item"><img src="assets/logos/Banco_do_Brasil_Logo.svg" alt="Banco do Brasil"></span>
+          <span class="logo-item"><img src="assets/logos/mercado-livre-logo.svg" alt="Mercado Livre"></span>
+          <span class="logo-item"><img src="assets/logos/Banco_Bradesco_logo.svg" alt="Bradesco"></span>
+          <span class="logo-item"><img src="assets/logos/sicoob-logo-brandlogos.net_l8qi3bg6u.svg" alt="Sicoob"></span>
+          <span class="logo-item"><img src="assets/logos/Nestlé_logo.svg" alt="Nestlé"></span>
+          <span class="logo-item"><img src="assets/logos/USP.svg" alt="USP"></span>
+          <span class="logo-item"><img src="assets/logos/Mackenzie%20Logo%20Vector.svg" alt="Mackenzie"></span>
+          <span class="logo-item"><img src="assets/logos/Itaú_Unibanco.svg" alt="Itaú Unibanco"></span>
+          <span class="logo-item"><img src="assets/logos/Azul_Linhas_Aéreas_Brasileiras.svg" alt="Azul"></span>
+          <span class="logo-item"><img src="assets/logos/Caterpillar_logo.svg" alt="Caterpillar"></span>
+          <span class="logo-item"><img src="assets/logos/Embrapa.svg" alt="Embrapa"></span>
+          <span class="logo-item"><img src="assets/logos/Corteva_logo.svg" alt="Corteva"></span>
+          <span class="logo-item"><img src="assets/logos/Conab.svg" alt="Conab"></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Shopee.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Sebrae.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/VIVO.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Caixa_Economica_Federal.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Banco_do_Brasil_Logo.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/mercado-livre-logo.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Banco_Bradesco_logo.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/sicoob-logo-brandlogos.net_l8qi3bg6u.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Nestlé_logo.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/USP.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Mackenzie%20Logo%20Vector.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Itaú_Unibanco.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Azul_Linhas_Aéreas_Brasileiras.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Caterpillar_logo.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Embrapa.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Corteva_logo.svg" alt=""></span>
+          <span class="logo-item" aria-hidden="true"><img src="assets/logos/Conab.svg" alt=""></span>
+        </div>
       </div>
     </div>
   </div>
@@ -436,5 +466,17 @@
 </div>
 
 <script src="motion.js"></script>
+<script>
+(function(){
+  var scroll = document.querySelector('.logos-scroll');
+  var track  = document.querySelector('.logos-track');
+  if (!scroll || !track) return;
+  track.style.animation = 'none';
+  var anim = track.animate(
+    [{ transform:'translateX(0)' }, { transform:'translateX(-50%)' }],
+    { duration: 40000, iterations: Infinity, easing: 'linear' }
+  );
+})();
+</script>
 </body>
 </html>

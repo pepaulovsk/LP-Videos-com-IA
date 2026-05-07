@@ -878,19 +878,33 @@ ul{list-style:none;margin:0;padding:0}
   display:flex;flex-direction:column;gap:24px;
 }
 .logos-strip .label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);text-align:center}
-.logos{
-  display:grid;grid-template-columns:repeat(6,1fr);gap:32px;align-items:center;
+.logos-scroll{
+  overflow:hidden;
+  width:100vw;
+  margin-left:calc(50% - 50vw);
 }
-.logo-ph{
-  height:24px;
-  background:var(--ink-2);
-  -webkit-mask-position:center;mask-position:center;
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  -webkit-mask-size:contain;mask-size:contain;
-  opacity:.5;transition:opacity .3s;
+.logos-track{
+  display:flex;
+  align-items:center;
+  gap:56px;
+  padding:8px 28px;
+  width:max-content;
+  will-change:transform;
+  animation:logos-marquee 40s linear infinite;
 }
-.logo-ph:hover{opacity:1}
-@media (max-width:880px){.testi-row{grid-template-columns:1fr}.logos{grid-template-columns:repeat(3,1fr)}}
+@keyframes logos-marquee{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+.logo-item{display:flex;align-items:center;flex-shrink:0}
+.logo-item img{
+  height:34px;width:auto;max-width:130px;
+  object-fit:contain;
+  filter:grayscale(1) opacity(.55);
+  transition:filter .4s ease;
+}
+.logo-item:hover img{filter:grayscale(0) opacity(1);}
+@media (max-width:880px){.testi-row{grid-template-columns:1fr}}
 
 /* ============================================================
    S10 — OFERTA
