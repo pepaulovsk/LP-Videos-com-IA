@@ -461,6 +461,56 @@
   <a href="#oferta" class="btn">Garantir vaga <span class="arrow">→</span></a>
 </div>
 
+<script>
+(function(){
+  var test = document.createElement('video');
+  if (test.canPlayType('video/mp4; codecs=av01') !== '') return;
+
+  var map = {
+    'assets/Videos-AV1/1hero.mp4':                         'assets/Videos-H264/banner-lp_H264.mp4',
+    'assets/Videos-AV1/brisasuave-lp_AV1.mp4':             'assets/Videos-H264/brisasuave-lp_H264.mp4',
+    'assets/Videos-AV1/Drift_Take_01_Video_01_AV1.mp4':    'assets/Videos-H264/Drift_Take_01_Video_01_H264.mp4',
+    'assets/Videos-AV1/girl_AV1.mp4':                      'assets/Videos-H264/girl_H264.mp4',
+    'assets/Videos-AV1/palestrantes_felipe-lp_AV1.mp4':    'assets/Videos-H264/palestrantes_felipe-lp_v2_H264.mp4',
+    'assets/Videos-AV1/palestrantes_jose-lp_AV1.mp4':      'assets/Videos-H264/palestrantes_jose-lp_H264.mp4',
+    'assets/Videos-AV1/palestrantes_thales-lp_AV1.mp4':    'assets/Videos-H264/palestrantes_thales-lp_v2_H264.mp4',
+    'assets/Videos-AV1/palestrantes_wes-lp_AV1.mp4':       'assets/Videos-H264/palestrantes_wes-lp_H264.mp4',
+    'assets/Videos-AV1/palestrantes_zerati-lp_AV1.mp4':    'assets/Videos-H264/palestrantes_zerati-lp_v2_H264.mp4',
+    'assets/Videos-AV1/perfis-designer_AV1.mp4':           'assets/Videos-H264/perfis-designer_H264.mp4',
+    'assets/Videos-AV1/perfis-empreendedor_AV1.mp4':       'assets/Videos-H264/perfis-empreendedor_H264.mp4',
+    'assets/Videos-AV1/perfis-marketing_AV1.mp4':          'assets/Videos-H264/perfis-marketing_H264.mp4',
+    'assets/Videos-AV1/Persona_Take_01_Video_01_AV1.mp4':  'assets/Videos-H264/Persona_Take_01_Video_v2_H264.mp4',
+    'assets/Videos-AV1/reel-produto1_AV1.mp4':             'assets/Videos-H264/reel-produto1_H264.mp4',
+    'assets/Videos-AV1/reel-produto3_AV1.mp4':             'assets/Videos-H264/reel-produto3_H264.mp4',
+    'assets/Videos-AV1/reel-produto4_AV1.mp4':             'assets/Videos-H264/reel-produto4_H264.mp4',
+    'assets/Videos-AV1/reel-produto5_AV1.mp4':             'assets/Videos-H264/reel-produto5_H264.mp4',
+    'assets/Videos-AV1/reel-produto6_AV1.mp4':             'assets/Videos-H264/reel-produto6_H264.mp4',
+    'assets/Videos-AV1/trofeu-elg_AV1.mp4':                'assets/Videos-H264/trofeu-elg_H264.mp4'
+  };
+
+  function swap(src){ return map[src] || src; }
+
+  document.querySelectorAll('video[src]').forEach(function(vid){
+    var h264 = swap(vid.getAttribute('src'));
+    if (h264 === vid.getAttribute('src')) return;
+    vid.src = h264;
+    vid.load();
+    if (vid.hasAttribute('autoplay')) vid.play().catch(function(){});
+  });
+
+  document.querySelectorAll('video source[src]').forEach(function(s){
+    var h264 = swap(s.getAttribute('src'));
+    if (h264 === s.getAttribute('src')) return;
+    s.setAttribute('src', h264);
+    var vid = s.closest('video');
+    if (vid){ vid.load(); if (vid.hasAttribute('autoplay')) vid.play().catch(function(){}); }
+  });
+
+  document.querySelectorAll('[data-video]').forEach(function(el){
+    el.dataset.video = swap(el.dataset.video);
+  });
+})();
+</script>
 <script src="motion.js"></script>
 <script>
 (function(){
