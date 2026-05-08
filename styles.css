@@ -685,6 +685,8 @@ ul{list-style:none;margin:0;padding:0}
   transition:transform .4s var(--ease-out), color .3s;align-self:center;
 }
 .aula.open .toggle{transform:rotate(45deg);color:var(--terra-hi)}
+.aula:focus-visible{outline:2px solid var(--amber);outline-offset:4px;border-radius:4px}
+.aula:focus-visible .body-col h4{color:var(--amber)}
 .cron-foot{
   margin-top:48px;font-size:clamp(18px,1.8vw,24px);font-weight:700;
   color:var(--ink);max-width:30ch;line-height:1.25;letter-spacing:-.01em;
@@ -809,6 +811,7 @@ ul{list-style:none;margin:0;padding:0}
   z-index:3;
 }
 .compare:hover .knob{transform:translate(-50%,-50%) scale(1.1)}
+.compare:focus-visible{outline:2px solid var(--amber);outline-offset:4px}
 .compare .knob svg{width:18px;height:18px}
 .pair-thumbs{
   display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;
@@ -821,6 +824,7 @@ ul{list-style:none;margin:0;padding:0}
 }
 .pair-thumb:hover{transform:translateY(-3px);border-color:var(--terra)}
 .pair-thumb.active{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber)}
+.pair-thumb:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 .pair-thumb .lbl{
   position:absolute;left:10px;bottom:8px;
   font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-2);
@@ -1023,6 +1027,8 @@ ul{list-style:none;margin:0;padding:0}
   font-size:15px;line-height:1.6;color:var(--ink-2);max-width:70ch;
 }
 .faq-item.open .faq-a{grid-template-rows:1fr}
+.faq-q:focus-visible{outline:2px solid var(--amber);outline-offset:4px;border-radius:4px}
+.faq-q:focus-visible .qt{color:var(--amber)}
 
 /* ============================================================
    S12 — URGÊNCIA
@@ -1091,14 +1097,14 @@ ul{list-style:none;margin:0;padding:0}
 }
 .footer .container{max-width:var(--container);margin:0 auto;padding:0}
 .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:60px}
-.footer h4{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2);margin:0 0 16px;font-weight:500}
+.footer h4{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-2);margin:0 0 16px;font-weight:500}
 .footer ul{display:flex;flex-direction:column;gap:10px;font-size:14px}
 .footer ul li{transition:color .3s}
 .footer ul li:hover{color:var(--ink)}
 .footer .brand{display:flex;flex-direction:column;gap:14px}
 .footer .brand .logo{display:flex;align-items:center;gap:10px;color:var(--ink);font-weight:700;font-size:16px}
 .footer .brand .logo-img{height:26px;width:auto;display:block}
-.footer .brand p{margin:0;font-size:13px;line-height:1.6;color:var(--muted);max-width:32ch}
+.footer .brand p{margin:0;font-size:14px;line-height:1.6;color:var(--muted);max-width:32ch}
 .footer-legal{
   border-top:1px solid var(--line);padding-top:24px;
   display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;

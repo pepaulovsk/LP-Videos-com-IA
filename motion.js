@@ -118,10 +118,14 @@
   const aulas = document.querySelectorAll('.aula');
   aulas.forEach((a, i) => {
     if (i === 0) a.classList.add('open');
-    a.addEventListener('click', () => {
+    const toggleAula = () => {
       const wasOpen = a.classList.contains('open');
       aulas.forEach(x => x.classList.remove('open'));
       if (!wasOpen) a.classList.add('open');
+    };
+    a.addEventListener('click', toggleAula);
+    a.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleAula(); }
     });
   });
 
@@ -156,10 +160,15 @@
   const faqs = document.querySelectorAll('.faq-item');
   faqs.forEach((it, i) => {
     if (i === 0) it.classList.add('open');
-    it.addEventListener('click', () => {
+    const toggleFaq = () => {
       const wasOpen = it.classList.contains('open');
       faqs.forEach(x => x.classList.remove('open'));
       if (!wasOpen) it.classList.add('open');
+    };
+    it.addEventListener('click', toggleFaq);
+    const q = it.querySelector('.faq-q');
+    if (q) q.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleFaq(); }
     });
   });
 
@@ -213,25 +222,31 @@
     };
     const end = () => { dragging = false; c.style.cursor=''; };
 
-    c.addEventListener('mousedown', (e) => { start(e); setPct(xToPct(e.clientX)); });
+    let kbPct = 50;
+    let wobbleActive = true;
+    c.addEventListener('mousedown', (e) => { start(e); setPct(xToPct(e.clientX)); kbPct = xToPct(e.clientX); });
     window.addEventListener('mousemove', move);
     window.addEventListener('mouseup', end);
     c.addEventListener('touchstart', (e) => { start(e); setPct(xToPct(e.touches[0].clientX)); }, {passive:true});
     c.addEventListener('touchmove', move, {passive:true});
     c.addEventListener('touchend', end);
+    c.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); wobbleActive = false; kbPct = Math.max(2, kbPct - 5); setPct(kbPct); }
+      if (e.key === 'ArrowRight') { e.preventDefault(); wobbleActive = false; kbPct = Math.min(98, kbPct + 5); setPct(kbPct); }
+    });
 
     // ambient idle motion (subtle wobble before user touches)
     if (!prefersReduced){
-      let t = 0; let active = true;
+      let t = 0;
       const wob = () => {
-        if (!active) return;
+        if (!wobbleActive) return;
         t += 0.012;
         const pct = 50 + Math.sin(t) * 6;
         setPct(pct);
         requestAnimationFrame(wob);
       };
       wob();
-      const stop = () => { active = false; };
+      const stop = () => { wobbleActive = false; };
       c.addEventListener('mousedown', stop, {once:true});
       c.addEventListener('touchstart', stop, {once:true});
       c.addEventListener('mouseenter', stop, {once:true});
@@ -240,7 +255,7 @@
 
   /* ---------- Pair thumbs — switch active + update compare content ---------- */
   document.querySelectorAll('.pair-thumb').forEach(t => {
-    t.addEventListener('click', () => {
+    const activateThumb = () => {
       document.querySelectorAll('.pair-thumb').forEach(x => x.classList.remove('active'));
       t.classList.add('active');
 
@@ -258,6 +273,10 @@
         afterVid.load();
         afterVid.play().catch(() => {});
       }
+    };
+    t.addEventListener('click', activateThumb);
+    t.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateThumb(); }
     });
   });
 
