@@ -445,7 +445,7 @@ ul{list-style:none;margin:0;padding:0}
 .s-futuro{
   background:linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
 }
-.futuro-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:60px;flex-wrap:wrap}
+.futuro-head{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;margin-bottom:60px;flex-wrap:wrap}
 .futuro-head .lead{margin:0;max-width:42ch}
 .video-grid{
   display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
@@ -574,7 +574,7 @@ ul{list-style:none;margin:0;padding:0}
     linear-gradient(180deg, oklch(0.13 0.03 30 / .65) 0%, oklch(0.13 0.03 30 / .35) 30%, oklch(0.13 0.03 30 / .85) 100%);
 }
 .s-perfis > .container{position:relative;z-index:1}
-.perfis-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:60px;flex-wrap:wrap}
+.perfis-head{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;margin-bottom:60px;flex-wrap:wrap}
 .perfis{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .perfil{
   position:relative;
