@@ -871,7 +871,7 @@ ul{list-style:none;margin:0;padding:0}
 .testi .who{display:flex;align-items:center;gap:14px;margin-top:auto}
 .testi .who .av{
   width:42px;height:42px;border-radius:50%;
-  background:linear-gradient(135deg, oklch(0.50 0.12 var(--h,40)), oklch(0.30 0.08 var(--h,40)));
+  background-size:cover;background-position:center;
   border:1px solid var(--line);
   flex-shrink:0;
 }
